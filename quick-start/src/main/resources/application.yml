@@ -1,0 +1,15 @@
+spring:
+    application:
+      name: quick-start
+    #加载 key 配置文件
+    profiles:
+      active: key
+    #deep_seek配置
+    ai:
+      deepseek:
+        api-key: ${deep-seek.key}
+        chat:
+          options:
+            model: deepseek-chat
+
+
