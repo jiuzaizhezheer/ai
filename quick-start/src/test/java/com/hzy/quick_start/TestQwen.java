@@ -7,18 +7,25 @@ import com.alibaba.cloud.ai.dashscope.audio.DashScopeSpeechSynthesisOptions;
 import com.alibaba.cloud.ai.dashscope.audio.synthesis.SpeechSynthesisPrompt;
 import com.alibaba.cloud.ai.dashscope.audio.synthesis.SpeechSynthesisResponse;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.audio.transcription.AudioTranscriptionPrompt;
 import org.springframework.ai.audio.transcription.AudioTranscriptionResponse;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.content.Media;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
+import org.springframework.util.MimeTypeUtils;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -148,5 +155,31 @@ public class TestQwen {
 
         System.out.println(response.getResult().getOutput());
 
+    }
+
+    /**
+     * 多模态
+     * @param dashScopeChatModel
+     * @throws MalformedURLException
+     */
+    @Test
+    public void testMultimodal(@Autowired DashScopeChatModel dashScopeChatModel
+    ) throws MalformedURLException {
+        // flac、mp3、mp4、mpeg、mpga、m4a、ogg、wav 或 webm。
+        var audioFile = new ClassPathResource("/files/hollow.png");
+
+        Media media = new Media(MimeTypeUtils.IMAGE_JPEG, audioFile);
+        DashScopeChatOptions options = DashScopeChatOptions.builder()
+                //开启多模态
+                .withMultiModel(true)
+                .withModel("qwen-vl-max-latest").build();
+
+        Prompt prompt= Prompt.builder().chatOptions(options)
+                .messages(UserMessage.builder().media(media)
+                        .text("识别图片").build())
+                .build();
+        ChatResponse response = dashScopeChatModel.call(prompt);
+
+        System.out.println(response.getResult().getOutput().getText());
     }
 }
