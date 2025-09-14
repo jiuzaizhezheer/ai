@@ -4,14 +4,14 @@ spring:
     #加载 key 配置文件
     profiles:
       active: key
-    #deep_seek配置
     ai:
+      #deep_seek配置
       deepseek:
         api-key: ${deep-seek.key}
         chat:
           options:
             model: deepseek-chat
-    #阿里百炼配置
+      #阿里百炼配置
       dashscope:
         api-key: ${dashscope.key}
         #文本对话
@@ -22,5 +22,8 @@ spring:
         image:
           options:
             model: wanx-v1
-
-
+      #ollama
+      ollama:
+        base-url: http://localhost:11434
+        chat:
+          model: qwen2:0.5b
