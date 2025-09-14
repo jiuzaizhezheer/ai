@@ -12,6 +12,3 @@ spring:
       #deep_seek配置
       deepseek:
         api-key: ${deep-seek.key}
-        chat:
-          options:
-            model: deepseek-chat

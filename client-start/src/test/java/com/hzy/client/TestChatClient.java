@@ -53,6 +53,7 @@ public class TestChatClient {
         for (String s : content.toIterable()) {
             System.out.print(s);
         }
-
     }
+
+
 }
