@@ -10,6 +10,12 @@ import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageModel;
 import com.alibaba.cloud.ai.dashscope.image.DashScopeImageOptions;
+import com.alibaba.dashscope.aigc.videosynthesis.VideoSynthesis;
+import com.alibaba.dashscope.aigc.videosynthesis.VideoSynthesisParam;
+import com.alibaba.dashscope.aigc.videosynthesis.VideoSynthesisResult;
+import com.alibaba.dashscope.exception.ApiException;
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.audio.transcription.AudioTranscriptionPrompt;
@@ -182,4 +188,23 @@ public class TestQwen {
 
         System.out.println(response.getResult().getOutput().getText());
     }
+
+
+    /**
+     * 文生视频
+     * @throws ApiException
+     * @throws NoApiKeyException
+     * @throws InputRequiredException
+     */
+    @Test
+    public void text2Video(@Autowired VideoSynthesisParam  param) throws ApiException, NoApiKeyException, InputRequiredException {
+        VideoSynthesis vs = new VideoSynthesis();
+        //用户设置提示词
+        param.setPrompt("一只狗在跳舞");
+        System.out.println("please wait...");
+        VideoSynthesisResult result = vs.call(param);
+        System.out.println(result.getOutput().getVideoUrl());
+    }
+
+
 }
