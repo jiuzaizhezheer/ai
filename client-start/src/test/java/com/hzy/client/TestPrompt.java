@@ -15,11 +15,12 @@ public class TestPrompt {
     @Test
     public void testPrompt(@Autowired DeepSeekChatModel deepSeekChatModel) {
 
-        String prompt = "请在每一段话后面加上一个“喵”";
+        String prompt = "请在每一段话后面加上一个“喵”，姓名 {name} ,年龄 {age} ";
         //全局系统提示词
         ChatClient client = ChatClient.builder(deepSeekChatModel).defaultSystem(prompt).build();
 
-        String content = client.prompt().user("你好").call().content();
+        String content = client.prompt().user("你好").system(p->p.param("name","张三")
+                .param("age",18)).call().content();
         System.out.println(content);
 
         //局部系统提示词, 局部会覆盖全局
