@@ -22,7 +22,8 @@ public class TestDeepSeek {
 //        System.out.println(msg);
         //配置一些属性
         //temperature(温度 0 ~ 2,越高越激情 ),可在yml配置
-        //DeepSeekChatOptions build = DeepSeekChatOptions.builder().temperature(1.2d).build();
+//        DeepSeekChatOptions build = DeepSeekChatOptions.builder().temperature(1.2d).build();
+//        new Prompt("要询问的消息",build);
         //流式输出
         Flux<String> stream = deepSeekChatModel.stream("薛之谦是谁？？？200字");
         //输出

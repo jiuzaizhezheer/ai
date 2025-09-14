@@ -64,7 +64,7 @@
 				<scope>import</scope>
 			</dependency>
 
-			<!--	spring-alibaba-ai-->
+			<!--  spring-alibaba-ai  -->
 			<dependency>
 				<groupId>com.alibaba.cloud.ai</groupId>
 				<artifactId>spring-ai-alibaba-bom</artifactId>
