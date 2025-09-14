@@ -1,0 +1,17 @@
+spring:
+    application:
+      name: client-start
+    #加载 key 配置文件
+    profiles:
+      active: key
+    ai:
+      #阿里百炼配置
+      dashscope:
+        api-key: ${dashscope.key}
+
+      #deep_seek配置
+      deepseek:
+        api-key: ${deep-seek.key}
+        chat:
+          options:
+            model: deepseek-chat

@@ -16,6 +16,7 @@
 	<description>ai</description>
 	<modules>
 		<module>quick-start</module>
+		<module>client-start</module>
 	</modules>
 	<packaging>pom</packaging>
 	<url/>

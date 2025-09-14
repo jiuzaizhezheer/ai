@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class AdminApplication {
+public class QuickApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AdminApplication.class, args);
+        SpringApplication.run(QuickApplication.class, args);
         System.err.println("AI大模型启动~~~");
     }
 }
