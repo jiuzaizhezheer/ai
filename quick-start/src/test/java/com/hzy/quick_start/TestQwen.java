@@ -33,13 +33,19 @@ public class TestQwen {
         stream.toIterable().forEach(System.out::print);
     }
 
-
+    /**
+     * 文生图
+     * @param imageModel
+     * @throws MalformedURLException
+     */
 
     @Test
     public void text2Img(
             @Autowired DashScopeImageModel imageModel) throws MalformedURLException {
         DashScopeImageOptions imageOptions = DashScopeImageOptions.builder()
                 .withModel("wanx2.1-t2i-turbo")
+//                .withHeight()
+//                .withN()
                 .withResponseFormat("both") // 如果服务支持同时返回url,base64
                 .build();
 
