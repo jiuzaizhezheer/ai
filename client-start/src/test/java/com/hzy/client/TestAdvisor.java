@@ -80,13 +80,13 @@ public class TestAdvisor {
          * @param chatMemoryRepository
          * @return
          */
+
         @Bean
-        public ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
+        ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
             return MessageWindowChatMemory
                     .builder()
                     .maxMessages(10)
-                    .chatMemoryRepository(chatMemoryRepository)
-                    .build();
+                    .chatMemoryRepository(chatMemoryRepository).build();
         }
 
     }

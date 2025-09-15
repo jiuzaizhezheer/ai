@@ -1,6 +1,12 @@
 spring:
     application:
       name: client-start
+#    数据库连接信息
+    datasource:
+      username: root
+      password: 1234
+      url: jdbc:mysql://localhost:3306/spring_ai?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&
+      driver-class-name: com.mysql.cj.jdbc.Driver
     #加载 key 配置文件
     profiles:
       active: key
@@ -12,6 +18,14 @@ spring:
       #deep_seek配置
       deepseek:
         api-key: ${deep-seek.key}
+#        会话存储配置
+      chat:
+        memory:
+          repository:
+            jdbc:
+              initialize-schema: always
+              schema: classpath:/schema-mysql.sql
+#日志级别
 logging:
   level:
     org:
