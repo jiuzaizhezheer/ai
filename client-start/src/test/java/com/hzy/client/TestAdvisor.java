@@ -90,4 +90,39 @@ public class TestAdvisor {
         }
 
     }
+
+    /**
+     * 多个用户会话记忆隔离
+     * @param deepSeekChatModel
+     *
+     */
+    @Test
+    public void testChatOptions(@Autowired DeepSeekChatModel deepSeekChatModel,
+                                @Autowired ChatMemory chatMemory) {
+        ChatClient chatClient = ChatClient.builder(deepSeekChatModel).defaultAdvisors(PromptChatMemoryAdvisor.builder(chatMemory).build()).build();
+        String content = chatClient.prompt()
+                .user("我叫蔡徐坤 ？")
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID,"1"))
+                .call()
+                .content();
+        System.out.println(content);
+        System.out.println("--------------------------------------------------------------------------");
+
+        content = chatClient.prompt()
+                .user("我叫什么 ？")
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID,"1"))
+                .call()
+                .content();
+        System.out.println(content);
+
+
+        System.out.println("--------------------------------------------------------------------------");
+
+        content = chatClient.prompt()
+                .user("我叫什么 ？")
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID,"2"))
+                .call()
+                .content();
+        System.out.println(content);
+    }
 }

@@ -19,4 +19,5 @@ logging:
         ai:
           chat:
             client:
-              advisor: DEBUG
+              advisor:
+                SimpleLoggerAdvisor: DEBUG
