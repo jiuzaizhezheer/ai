@@ -12,3 +12,11 @@ spring:
       #deep_seek配置
       deepseek:
         api-key: ${deep-seek.key}
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor: DEBUG
