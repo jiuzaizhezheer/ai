@@ -6,9 +6,13 @@ import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 
@@ -66,6 +70,24 @@ public class TestAdvisor {
         System.out.println(client.prompt().user("记住我是我是蔡徐坤").call().content());
         //第二轮对话
         System.out.println(client.prompt().user("请问我是谁？").call().content());
+
+    }
+
+    @TestConfiguration
+    static class TestMemoryConfig {
+        /**
+         * 自定义会话记忆参数
+         * @param chatMemoryRepository
+         * @return
+         */
+        @Bean
+        public ChatMemory chatMemory(ChatMemoryRepository chatMemoryRepository) {
+            return MessageWindowChatMemory
+                    .builder()
+                    .maxMessages(10)
+                    .chatMemoryRepository(chatMemoryRepository)
+                    .build();
+        }
 
     }
 }
