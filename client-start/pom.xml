@@ -36,6 +36,12 @@
             <artifactId>spring-ai-starter-model-ollama</artifactId>
         </dependency>
 
+<!--    大模型会话记忆功能    -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-autoconfigure-model-chat-memory</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

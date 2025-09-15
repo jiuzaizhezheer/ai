@@ -2,8 +2,10 @@ package com.hzy.client;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SafeGuardAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +14,10 @@ import java.util.List;
 
 @SpringBootTest
 public class TestAdvisor {
+    /**
+     * 日志 , 敏感词拦截
+     * @param deepSeekChatModel
+     */
     @Test
     public void testAdvisor(@Autowired DeepSeekChatModel deepSeekChatModel) {
 
@@ -23,6 +29,11 @@ public class TestAdvisor {
                 .call()
                 .content());
     }
+
+    /**
+     * 重写拦截器
+     * @param deepSeekChatModel
+     */
     @Test
     public void testReReadingAdvisor(@Autowired DeepSeekChatModel deepSeekChatModel) {
 
@@ -36,6 +47,25 @@ public class TestAdvisor {
                 .call()
                 .content());
 
+
+    }
+
+    /**
+     * 会话记忆功能
+     * @param deepSeekChatModel
+     * @param chatMemory
+     */
+    @Test
+    public void testMemoryAdvisor(@Autowired DeepSeekChatModel deepSeekChatModel,
+                                  @Autowired ChatMemory chatMemory) {
+
+        ChatClient client = ChatClient
+                .builder(deepSeekChatModel)
+                .defaultAdvisors(PromptChatMemoryAdvisor.builder(chatMemory).build()).build();
+        //第一轮对话
+        System.out.println(client.prompt().user("记住我是我是蔡徐坤").call().content());
+        //第二轮对话
+        System.out.println(client.prompt().user("请问我是谁？").call().content());
 
     }
 }
