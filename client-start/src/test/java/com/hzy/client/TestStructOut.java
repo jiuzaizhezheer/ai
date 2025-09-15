@@ -39,4 +39,29 @@ public class TestStructOut {
             //可继续调用 客服ChatClient进行对话
         }
     }
+
+    //内部类
+    public record Address(
+            String name,        // 收件人姓名
+            String phone,       // 联系电话
+            String province,    // 省
+            String city,        // 市
+            String district,    // 区/县
+            String detail       // 详细地址
+    ) {}
+
+    /**
+     * 转化为Address结构输出
+     */
+    @Test
+    public void testEntityOut() {
+        Address address = chatClient.prompt()
+                .system("""
+                        请从下面这条文本中提取收货信息
+                        """)
+                .user("收货人：蔡徐坤，电话13588888888，地址：浙江省杭州市西湖区文一西路100号8幢202室")
+                .call()
+                .entity(Address.class);
+        System.out.println(address);
+    }
 }
