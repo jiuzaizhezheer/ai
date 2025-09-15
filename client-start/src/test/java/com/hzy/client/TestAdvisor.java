@@ -22,6 +22,19 @@ public class TestAdvisor {
                 .advisors(new SimpleLoggerAdvisor(),new SafeGuardAdvisor(List.of("蔡徐坤")))
                 .call()
                 .content());
+    }
+    @Test
+    public void testReReadingAdvisor(@Autowired DeepSeekChatModel deepSeekChatModel) {
+
+        ChatClient client = ChatClient.builder(deepSeekChatModel).build();
+
+        System.out.println(client.prompt()
+                .user("诸葛亮作文200字")
+                .advisors(new SimpleLoggerAdvisor()
+                        ,new SafeGuardAdvisor(List.of("蔡徐坤"))
+                        ,new ReReadingAdvisor())
+                .call()
+                .content());
 
 
     }
