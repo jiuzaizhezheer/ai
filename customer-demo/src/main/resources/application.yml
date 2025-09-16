@@ -1,0 +1,24 @@
+spring:
+    application:
+      name: tools-demo
+
+    #加载 key 配置文件
+    profiles:
+      active: key
+    ai:
+      #deep_seek配置
+      deepseek:
+        api-key: ${deep-seek.key}
+
+
+#日志级别
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor:
+                SimpleLoggerAdvisor: DEBUG
+

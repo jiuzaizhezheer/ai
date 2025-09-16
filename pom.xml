@@ -19,7 +19,8 @@
 		<module>client-start</module>
         <module>agent-demo</module>
 		<module>Tools-Demo</module>
-	</modules>
+        <module>customer-demo</module>
+    </modules>
 	<packaging>pom</packaging>
 	<url/>
 	<licenses>
