@@ -16,13 +16,13 @@ public class ToolsController {
 
     private final ChatClient chatClient;
 
-
     public ToolsController(DeepSeekChatModel chatModel, ChatMemory chatMemory ,ToolsService toolsService){
          this.chatClient = ChatClient
                  .builder(chatModel)
                  .defaultAdvisors(PromptChatMemoryAdvisor
                          .builder(chatMemory).build())
-                 .defaultTools(toolsService)//将tools绑定到client
+                 //.defaultTools(toolsService)//绑定静态tools
+                 .defaultToolCallbacks(toolsService.getToolCallList(toolsService))//绑定动态tools
                  .build();
     }
 
