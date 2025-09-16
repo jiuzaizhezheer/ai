@@ -17,7 +17,8 @@
 	<modules>
 		<module>quick-start</module>
 		<module>client-start</module>
-	</modules>
+        <module>agent-demo</module>
+    </modules>
 	<packaging>pom</packaging>
 	<url/>
 	<licenses>
