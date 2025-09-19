@@ -30,6 +30,7 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-autoconfigure-model-chat-memory</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

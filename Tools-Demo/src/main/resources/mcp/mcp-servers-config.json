@@ -1,0 +1,34 @@
+{
+  "mcpServers": {
+
+    "baidu-map": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@baidumap/mcp-server-baidu-map"
+      ],
+      "env": {
+        "BAIDU_MAP_API_KEY": "LEyBQxG9UzR9C1GZ6zDHsFDVKvBem2do"
+      }
+    },
+
+    "filesystem": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "D:/Codes/ai",
+        "D:/Codes/ai/Tools-Demo",
+        "D:/Codes/ai/agent-demo",
+        "D:/Codes/ai/client-start",
+        "D:/Codes/ai/customer-demo",
+        "D:/Codes/ai/quick-start"
+      ]
+    }
+
+  }
+}

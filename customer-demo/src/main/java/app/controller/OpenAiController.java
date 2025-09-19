@@ -2,6 +2,7 @@ package app.controller;
 
 
 
+import com.hzy.quick_start.config.VideoSynthesisParamConfig;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

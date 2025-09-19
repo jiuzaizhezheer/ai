@@ -11,3 +11,30 @@ spring:
         api-key: ${deep-seek.key}
 
 
+      mcp:
+        client:
+          request-timeout: 60000
+          stdio:
+            # 1 单独放在一个json文件中(推荐,更易管理)
+            servers-configuration: classpath:/mcp/mcp-servers-config.json
+            # 2 直接配置在yml中
+#            connections:
+#              # mcp服务名称
+#              server1:
+#                command: /path/to/server
+#                args:
+#                  - --port=8080
+#                  - --mode=production
+#                env:
+#                  API_KEY: your-api-key
+#                  DEBUG: "true"
+
+#
+#开启mcp日志
+# 调试日志
+logging:
+  level:
+    io:
+      modelcontextprotocol:
+        client: DEBUG
+        spec: DEBUG

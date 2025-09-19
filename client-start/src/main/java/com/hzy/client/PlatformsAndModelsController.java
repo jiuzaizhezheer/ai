@@ -1,5 +1,6 @@
 package com.hzy.client;
 
+import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.ChatOptions;
@@ -28,4 +29,6 @@ public class PlatformsAndModelsController {
         Flux<String> content = client.prompt().user(platformsAndModelsDTO.getMsg()).stream().content();
         return content;
     }
+
+
 }

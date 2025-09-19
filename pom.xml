@@ -20,6 +20,7 @@
         <module>agent-demo</module>
 		<module>Tools-Demo</module>
         <module>customer-demo</module>
+        <module>test</module>
     </modules>
 	<packaging>pom</packaging>
 	<url/>

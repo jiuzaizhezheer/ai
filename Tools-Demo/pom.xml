@@ -29,6 +29,13 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-autoconfigure-model-chat-memory</artifactId>
         </dependency>
+
+
+        <!--既支持sse\也支持Stdio-->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-mcp-client-webflux</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
