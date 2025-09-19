@@ -24,6 +24,15 @@
           <groupId>org.springframework.ai</groupId>
           <artifactId>spring-ai-starter-mcp-server</artifactId>
       </dependency>
+
+<!--      stdio 不需要设置成web应用-->
+
+<!--      <dependency>-->
+<!--          <groupId>org.springframework.boot</groupId>-->
+<!--          <artifactId>spring-boot-starter-web</artifactId>-->
+<!--      </dependency>-->
+
+
   </dependencies>
 
     <dependencyManagement>

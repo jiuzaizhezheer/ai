@@ -8,14 +8,14 @@ import org.springframework.context.annotation.Bean;
 
 
 @SpringBootApplication
-public class StdioApplication {
+public class SSEApplication {
     public static void main(String[] args) {
-        SpringApplication.run(StdioApplication.class, args);
+        SpringApplication.run(SSEApplication.class, args);
         System.err.println("Client启动~~~");
     }
 
     @Bean
-    public ToolCallbackProvider stdioCallbackProvider(UserToolService userToolService) {
+    public ToolCallbackProvider sseToolCallbackProvider(UserToolService userToolService) {
         return MethodToolCallbackProvider.builder()
                 .toolObjects(userToolService)
                 .build();

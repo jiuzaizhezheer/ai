@@ -1,6 +1,8 @@
 spring:
   main:
+    # 禁止以web应用启动
     banner-mode: off
+    # 禁止 SPRING 横幅显示
     web-application-type: none
   ai:
     mcp:

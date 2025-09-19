@@ -21,6 +21,7 @@
 		<module>Tools-Demo</module>
         <module>customer-demo</module>
 		<module>mcp-stdio</module>
+		<module>mcp-sse</module>
 	</modules>
 	<packaging>pom</packaging>
 	<url/>

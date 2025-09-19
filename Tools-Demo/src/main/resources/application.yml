@@ -14,9 +14,20 @@ spring:
       mcp:
         client:
           request-timeout: 60000
+
+          # stdio形式
           stdio:
             # 1 单独放在一个json文件中(推荐,更易管理)
             servers-configuration: classpath:/mcp/mcp-servers-config.json
+
+          # sse形式
+          sse:
+            connections:
+              userINFO:
+                # mcp服务地址根地址
+                url: http://localhost:8088
+
+
             # 2 直接配置在yml中
 #            connections:
 #              # mcp服务名称
@@ -38,3 +49,17 @@ logging:
       modelcontextprotocol:
         client: DEBUG
         spec: DEBUG
+
+
+ #mcp-servers-config.json
+
+
+#  "mcp-stdio-server": {
+#    "command": "java",
+#    "args": [
+#      "-Dspring.ai.mcp.server.stdio=true",
+#      "-Dlogging.pattern.console=",
+#      "-jar",
+#      "D:\\Codes\\ai\\mcp-stdio\\target\\mcp-stdio-0.0.1-SNAPSHOT.jar"
+#    ]
+#  }
