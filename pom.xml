@@ -20,8 +20,8 @@
         <module>agent-demo</module>
 		<module>Tools-Demo</module>
         <module>customer-demo</module>
-        <module>test</module>
-    </modules>
+		<module>mcp-stdio</module>
+	</modules>
 	<packaging>pom</packaging>
 	<url/>
 	<licenses>
