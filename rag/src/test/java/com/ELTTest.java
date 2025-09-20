@@ -1,7 +1,11 @@
 package com;
 
+import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.alibaba.cloud.ai.dashscope.embedding.DashScopeEmbeddingModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.model.transformer.KeywordMetadataEnricher;
+import org.springframework.ai.model.transformer.SummaryMetadataEnricher;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.TextReader;
 import org.springframework.ai.reader.markdown.MarkdownDocumentReader;
@@ -10,14 +14,30 @@ import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.ParagraphPdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.SimpleVectorStore;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 
 import java.util.List;
 
 @SpringBootTest
 public class ELTTest {
+
+
+    @TestConfiguration
+    public static class TestConfig {
+        @Bean
+        public VectorStore vectorStore(DashScopeEmbeddingModel dashScopeEmbeddingModel) {
+            return SimpleVectorStore.builder(dashScopeEmbeddingModel).build();
+        }
+    }
+
     /**
      * 读取txt文本内容
      * @param resource
@@ -130,5 +150,66 @@ public class ELTTest {
 
         apply.forEach(System.out::println);
     }
+
+    /**
+     * 提取元数据 关键词
+     * @param chatModel
+     * @param resource
+     */
+    @Test
+    public void testKeywordMetadataEnricher(
+            @Autowired VectorStore vectorStore,
+            @Autowired DashScopeChatModel chatModel,
+            @Value("classpath:rag/test.txt") Resource resource) {
+        TextReader textReader = new TextReader(resource);
+        textReader.getCustomMetadata().put("filename", resource.getFilename());
+        List<Document> documents = textReader.read();
+
+        ChineseTokenTextSplitter splitter = new ChineseTokenTextSplitter();
+        List<Document> apply = splitter.apply(documents);
+        //提取关键字  但不能用于过滤，因为是不可控的
+        KeywordMetadataEnricher enricher = new KeywordMetadataEnricher(chatModel, 5);
+        apply=  enricher.apply(apply);
+        //添加到rag
+        vectorStore.add(apply);
+
+
+        //检索
+        List<Document> documents1 = vectorStore.similaritySearch(SearchRequest.builder()
+                .filterExpression("filename=='test.txt'") //过滤元数据，严格相等
+                .build());
+
+
+        System.out.println(documents1);
+    }
+
+
+    /**
+     * 上下文摘要提取
+     * @param chatModel
+     * @param resource
+     */
+    @Test
+    public void testSummaryMetadataEnricher(
+            @Autowired DashScopeChatModel chatModel,
+            @Value("classpath:rag/test.txt") Resource resource) {
+        TextReader textReader = new TextReader(resource);
+        textReader.getCustomMetadata().put("filename", resource.getFilename());
+        List<Document> documents = textReader.read();
+
+
+        ChineseTokenTextSplitter splitter = new ChineseTokenTextSplitter();
+        List<Document> apply = splitter.apply(documents);
+
+        SummaryMetadataEnricher enricher = new SummaryMetadataEnricher(chatModel,
+                List.of(SummaryMetadataEnricher.SummaryType.PREVIOUS,
+                        SummaryMetadataEnricher.SummaryType.CURRENT,
+                        SummaryMetadataEnricher.SummaryType.NEXT));
+
+        apply = enricher.apply(apply);
+
+        System.out.println(apply);
+    }
+
 
 }

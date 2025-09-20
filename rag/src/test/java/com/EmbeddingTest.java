@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 @SpringBootTest
 public class EmbeddingTest {
+
+
     @Test
     public void testEmbadding(@Autowired DashScopeEmbeddingModel dashScopeEmbeddingModel) {
 
