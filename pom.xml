@@ -24,7 +24,8 @@
 		<module>mcp-sse</module>
 		<module>rag</module>
         <module>actuator</module>
-    </modules>
+		<module>agent</module>
+	</modules>
 	<packaging>pom</packaging>
 	<url/>
 	<licenses>
