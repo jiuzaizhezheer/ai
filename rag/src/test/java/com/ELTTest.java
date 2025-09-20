@@ -9,6 +9,7 @@ import org.springframework.ai.reader.markdown.config.MarkdownDocumentReaderConfi
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.ParagraphPdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
+import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
@@ -93,6 +94,24 @@ public class ELTTest {
         for (Document document : documents) {
             System.out.println(document.getText());
         }
+    }
+
+    /**
+     * 文档分割器
+     * @param resource
+     */
+
+    @Test
+    public void testTokenTextSplitter(@Value("classpath:rag/test.txt") Resource resource) {
+        TextReader textReader = new TextReader(resource);
+        textReader.getCustomMetadata().put("filename", resource.getFilename());
+        List<Document> documents = textReader.read();
+
+
+        TokenTextSplitter splitter = new TokenTextSplitter(10, 8, 10, 5000, true);
+        List<Document> apply = splitter.apply(documents);
+
+        apply.forEach(System.out::println);
     }
 
 }
