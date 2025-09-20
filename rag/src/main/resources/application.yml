@@ -1,0 +1,24 @@
+spring:
+    application:
+      name: rag
+    #加载 key 配置文件
+    profiles:
+      active: key
+    ai:
+      #阿里百炼配置
+      dashscope:
+        api-key: ${dashscope.key}
+        embedding:
+          options:
+            model: "text-embedding-v3"
+
+#日志级别
+logging:
+  level:
+    org:
+      springframework:
+        ai:
+          chat:
+            client:
+              advisor:
+                SimpleLoggerAdvisor: DEBUG

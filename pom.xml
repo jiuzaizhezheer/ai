@@ -22,6 +22,7 @@
         <module>customer-demo</module>
 		<module>mcp-stdio</module>
 		<module>mcp-sse</module>
+		<module>rag</module>
 	</modules>
 	<packaging>pom</packaging>
 	<url/>
