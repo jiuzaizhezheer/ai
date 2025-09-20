@@ -13,6 +13,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
+import org.springframework.ai.rag.preretrieval.query.transformation.TranslationQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
@@ -104,7 +105,7 @@ public class ChatClientTest {
                 .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
                 .build();
 
-        // 增强多
+        // 检索增强顾问
         Advisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor.builder()
                 // 查 = QuestionAnswerAdvisor
                 .documentRetriever(VectorStoreDocumentRetriever.builder()
@@ -121,6 +122,12 @@ public class ChatClientTest {
                         .chatClientBuilder(ChatClient.builder(dashScopeChatModel))
                         .targetSearchSystem("航空票务助手")
                         .build())
+                //语言转换器
+                .queryTransformers(TranslationQueryTransformer.builder()
+                        .chatClientBuilder(ChatClient.builder(dashScopeChatModel))
+                        .targetLanguage("简体中文")
+                        .build()
+                )
                 // 检索后文档监控、操作
                 .documentPostProcessors((query, documents) -> {
                     System.out.println("Original query: " + query.text());
