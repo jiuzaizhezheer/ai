@@ -113,5 +113,22 @@ public class ELTTest {
 
         apply.forEach(System.out::println);
     }
+    /**
+     * 自定义文档分割器
+     * @param resource
+     */
+
+    @Test
+    public void testChineseTokenTextSplitter(@Value("classpath:rag/test.txt") Resource resource) {
+        TextReader textReader = new TextReader(resource);
+        textReader.getCustomMetadata().put("filename", resource.getFilename());
+        List<Document> documents = textReader.read();
+
+
+        ChineseTokenTextSplitter splitter = new ChineseTokenTextSplitter();
+        List<Document> apply = splitter.apply(documents);
+
+        apply.forEach(System.out::println);
+    }
 
 }
