@@ -6,8 +6,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
+import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
+import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -75,14 +81,61 @@ public class ChatClientTest {
                                 .query("退票多少钱？？？").build()).build()
                 )
                 .advisors(new SimpleLoggerAdvisor())
+
                 .stream()
                 .content();
 
         for (String s : flux.toIterable()) {
             System.out.println(s);
         }
+    }
+
+    /**
+     * 增强检索功能
+     * @param vectorStore
+     * @param dashScopeChatModel
+     */
+    @Test
+    public void testRag2(@Autowired VectorStore vectorStore,
+                         @Autowired DashScopeChatModel dashScopeChatModel) {
 
 
+        ChatClient chatClient = ChatClient.builder(dashScopeChatModel)
+                .defaultAdvisors(SimpleLoggerAdvisor.builder().build())
+                .build();
+
+        // 增强多
+        Advisor retrievalAugmentationAdvisor = RetrievalAugmentationAdvisor.builder()
+                // 查 = QuestionAnswerAdvisor
+                .documentRetriever(VectorStoreDocumentRetriever.builder()
+                        .similarityThreshold(0.50)
+                        .vectorStore(vectorStore)
+                        .build())
+                // 检索为空时，返回提示
+                .queryAugmenter(ContextualQueryAugmenter.builder()
+                        .allowEmptyContext(false)
+                        .emptyContextPromptTemplate(PromptTemplate.builder().template("用户查询位于知识库之外。礼貌地告知用户您无法回答").build())
+                        .build())
+                // 相似性查询内容转换
+                .queryTransformers(RewriteQueryTransformer.builder()
+                        .chatClientBuilder(ChatClient.builder(dashScopeChatModel))
+                        .targetSearchSystem("航空票务助手")
+                        .build())
+                // 检索后文档监控、操作
+                .documentPostProcessors((query, documents) -> {
+                    System.out.println("Original query: " + query.text());
+                    System.out.println("Retrieved documents: " + documents.size());
+                    return documents;
+                })
+                .build();
+
+        String answer = chatClient.prompt()
+                .advisors(retrievalAugmentationAdvisor)
+                .user("退一张票大概要多少费用？希望别扣太多啊")
+                .call()
+                .content();
+
+        System.out.println(answer);
     }
 
 
