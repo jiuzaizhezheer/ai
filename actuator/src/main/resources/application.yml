@@ -1,0 +1,21 @@
+# Spring AI 可观测性配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #暴露所有端点
+  endpoint:
+   health:
+     show-details: always
+
+#虚拟线程提高性能
+spring:
+  threads:
+    virtual:
+      enabled: true
+
+  ai:
+
+    #deep_seek配置
+    deepseek:
+      api-key: ${deep-seek.key}

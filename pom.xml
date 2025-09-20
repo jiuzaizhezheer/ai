@@ -23,7 +23,8 @@
 		<module>mcp-stdio</module>
 		<module>mcp-sse</module>
 		<module>rag</module>
-	</modules>
+        <module>actuator</module>
+    </modules>
 	<packaging>pom</packaging>
 	<url/>
 	<licenses>
