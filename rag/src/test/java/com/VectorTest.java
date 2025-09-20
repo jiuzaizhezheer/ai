@@ -29,7 +29,7 @@ public class VectorTest {
 
 
     @BeforeEach
-    public void testVector(@Autowired VectorStore vectorStore){
+    public void init(@Autowired VectorStore vectorStore){
         // 1. 声明内容文档
         Document doc = Document.builder()
                 .text("""
